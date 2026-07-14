@@ -1,0 +1,29 @@
+import pandas as pd
+data = pd.read_csv("employees_dirty.csv")
+original_data = data.copy()
+print(data.head())
+print(data.shape)
+print(data.info())
+print(data.isnull().sum())
+print("repeat:", data.duplicated().sum())
+data["Department"] = (data["Department"].str.strip().str.upper())
+data["Status"] = (data["Status"].str.strip()
+    .str.title())
+data["Department"] = data["Department"].replace({
+    "INFORMATION TECHNOLOGY": "IT",
+    "HUMAN RESOURCES": "HR"})
+data["Salary"] = pd.to_numeric(data["Salary"],errors="coerce")
+data["Experience"] = pd.to_numeric(data["Experience"],errors="coerce")
+data.loc[data["Experience"] < 0,"Experience"] = pd.NA
+salary_median = data["Salary"].median()
+data["Salary"] = data["Salary"].fillna(salary_median)
+data["Status"] = data["Status"].fillna("Unknown")
+print(data.isnull().sum())
+print("Repeat:", data.duplicated().sum())
+print(data.dtypes)
+print(data.shape)
+data.to_csv("employees_clean.csv",index=False)
+
+
+
+
