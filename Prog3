@@ -1,0 +1,79 @@
+import pandas as pd
+data = pd.DataFrame({
+    "Branch": [
+        "Baghdad", "Basra", "Baghdad", "Mosul",
+        "Basra", "Mosul", "Baghdad", "Basra"
+    ],
+    "Category": [
+        "Electronics", "Food", "Food", "Clothing",
+        "Electronics", "Food", "Clothing", "Clothing"
+    ],
+    "Units_Sold": [35, 80, 65, 30, 42, 55, 25, 60],
+    "Unit_Price": [450, 12, 10, 75, 420, 11, 80, 70],
+    "Stock": [8, 40, 25, 12, 6, 30, 15, 9],
+    "Customer_Rating": [4.7, 4.2, 4.0, 3.8, 4.6, 4.1, 3.9, 4.3]
+})
+data["Revenue"] = data["Units_Sold"] * data["Unit_Price"]
+print("Original Data:")
+print(data)
+selected = data[
+    ["Branch", "Category", "Units_Sold", "Revenue"]]
+print("\nSelected Columns:")
+print(selected)
+sorted_data = data.sort_values(
+    by="Revenue",
+    ascending=False)
+print("\nData Sorted by Revenue:")
+print(sorted_data)
+low_stock = data[data["Stock"] < 10]
+print("\nLow Stock Products:")
+print(low_stock)
+priority_items = data[
+    (data["Stock"] < 10) &
+    (data["Units_Sold"] >= 35)]
+print("\nProducts Needing Restocking:")
+print(priority_items)
+mean_sales = data["Units_Sold"].mean()
+median_sales = data["Units_Sold"].median()
+mode_category = data["Category"].mode()[0]
+print("\nMean Units Sold:", mean_sales)
+print("Median Units Sold:", median_sales)
+print("Most Frequent Category (Mode):", mode_category)
+minimum_sales = data["Units_Sold"].min()
+maximum_sales = data["Units_Sold"].max()
+sales_range = maximum_sales - minimum_sales
+sales_variance = data["Units_Sold"].var()
+sales_std = data["Units_Sold"].std()
+print("\nMinimum Sales:", minimum_sales)
+print("Maximum Sales:", maximum_sales)
+print("Range:", sales_range)
+print("Variance:", sales_variance)
+print("Standard Deviation:", sales_std)
+category_counts = data["Category"].value_counts()
+print("\nProduct Category Frequencies:")
+print(category_counts)
+category_percentages = (
+    data["Category"]
+    .value_counts(normalize=True) * 100)
+print("\nPercentage per Category:")
+print(category_percentages)
+branch_summary = (
+    data.groupby("Branch")
+    .agg(
+        Records=("Branch", "count"),
+        Total_Units=("Units_Sold", "sum"),
+        Average_Units=("Units_Sold", "mean"),
+        Total_Revenue=("Revenue", "sum"),
+        Average_Rating=("Customer_Rating", "mean")).reset_index())
+print("\nBranch Summary:")
+print(branch_summary)
+category_summary = (data.groupby("Category").agg(
+        Total_Units=("Units_Sold", "sum"),
+        Mean_Price=("Unit_Price", "mean"),
+        Total_Revenue=("Revenue", "sum"),
+        Mean_Stock=("Stock", "mean")).reset_index())
+print("\nCategory Summary:")
+print(category_summary)
+branch_summary.to_csv(
+    "branch_summary.csv",
+    index=False)
