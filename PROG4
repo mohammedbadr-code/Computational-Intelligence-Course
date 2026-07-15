@@ -1,0 +1,89 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from pathlib import Path
+output_dir = Path("/mnt/data/hospital_all_charts")
+output_dir.mkdir(exist_ok=True)
+
+
+plt.rcParams.update({"font.size": 16,"axes.titlesize": 16,"axes.labelsize": 16,"xtick.labelsize": 16,
+    "ytick.labelsize": 16,
+    "legend.fontsize": 16})
+
+months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+monthly_visits = [420, 450, 470, 510, 560, 610,650, 630, 590, 540, 500, 480]
+
+plt.figure(figsize=(12, 7))
+plt.plot(months, monthly_visits, marker="o", linewidth=2.5)
+plt.title("Monthly Patient Visits")
+plt.xlabel("Month")
+plt.ylabel("Number of Visits")
+plt.grid(alpha=0.3)
+plt.tight_layout()
+line_path = output_dir / "01_line_chart_monthly_visits.png"
+plt.savefig(line_path, dpi=220, bbox_inches="tight")
+plt.show()
+# ------------------------------------------------------------
+departments = ["Emergency", "Pediatrics", "Cardiology", "Surgery", "Dermatology"]
+department_patients = [520, 380, 310, 260, 190]
+plt.figure(figsize=(12, 7))
+plt.bar(departments, department_patients)
+plt.title("Patients by Hospital Department")
+plt.xlabel("Department")
+plt.ylabel("Number of Patients")
+plt.xticks(rotation=25, ha="right")
+plt.grid(axis="y", alpha=0.3)
+plt.tight_layout()
+bar_path = output_dir / "02_bar_chart_departments.png"
+plt.savefig(bar_path, dpi=220, bbox_inches="tight")
+plt.show()
+# ------------------------------------------------------------
+waiting_departments = ["Emergency", "Cardiology", "Surgery", "Pediatrics", "Dermatology"]
+waiting_time = [42, 36, 31, 24, 18]
+plt.figure(figsize=(12, 7))
+plt.barh(waiting_departments, waiting_time)
+plt.title("Average Waiting Time by Department")
+plt.xlabel("Average Waiting Time (Minutes)")
+plt.ylabel("Department")
+plt.grid(axis="x", alpha=0.3)
+plt.tight_layout()
+barh_path = output_dir / "03_horizontal_bar_waiting_time.png"
+plt.savefig(barh_path, dpi=220, bbox_inches="tight")
+plt.show()
+# ------------------------------------------------------------
+budget_categories = ["Medical Staff","Medicines","Equipment","Maintenance",
+    "Patient Services"]
+budget_values = [42, 24, 16, 10, 8]
+plt.figure(figsize=(9, 9))
+plt.pie(budget_values,labels=budget_categories,autopct="%1.0f%%",startangle=90)
+plt.title("Hospital Budget Distribution")
+plt.tight_layout()
+pie_path = output_dir / "04_pie_chart_budget.png"
+plt.savefig(pie_path, dpi=220, bbox_inches="tight")
+plt.show()
+# ------------------------------------------------------------
+rng = np.random.default_rng(10)
+patient_ages = np.clip(rng.normal(46, 18, 400), 1, 90)
+plt.figure(figsize=(12, 7))
+plt.hist(patient_ages, bins=12, edgecolor="black")
+plt.title("Distribution of Patient Ages")
+plt.xlabel("Age")
+plt.ylabel("Number of Patients")
+plt.grid(axis="y", alpha=0.3)
+plt.tight_layout()
+hist_path = output_dir / "05_histogram_patient_ages.png"
+plt.savefig(hist_path, dpi=220, bbox_inches="tight")
+plt.show()
+# ------------------------------------------------------------
+exercise_hours = rng.uniform(0.5, 10, 80)
+resting_heart_rate = 88 - 3.2 * exercise_hours + rng.normal(0, 4, 80)
+plt.figure(figsize=(12, 7))
+plt.scatter(exercise_hours, resting_heart_rate, s=60, alpha=0.8)
+plt.title("Exercise Hours vs Resting Heart Rate")
+plt.xlabel("Exercise Hours per Week")
+plt.ylabel("Resting Heart Rate (bpm)")
+plt.grid(alpha=0.3)
+plt.tight_layout()
+scatter_path = output_dir / "06_scatter_exercise_heart_rate.png"
+plt.savefig(scatter_path, dpi=220, bbox_inches="tight")
+plt.show()
+# ------------------------------------------------------------
