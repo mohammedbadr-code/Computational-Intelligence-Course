@@ -1,2 +1,2 @@
-# Computational-Intelligence-Course
-Computational Intelligence
+# Data-analysis
+Data analysis
